@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {Todolist} from "./Todolist/Todolist";
@@ -31,6 +31,19 @@ function App() {
     let [inputText, setInputText] = useState('')
     let [filter, setFilter] = useState<FilterTypeTasks>('All')
     let [error,setError] = useState('')
+
+    useEffect(()=> getLocalStorageTasks(),[])
+    useEffect(()=>addLocalStorageTasks(),[tasks])
+
+    const addLocalStorageTasks = () =>{
+        localStorage.setItem('tasks',JSON.stringify(tasks))
+    }
+    const getLocalStorageTasks = () => {
+      let newState =  localStorage.getItem('tasks')
+        if(newState){
+            setTasks(JSON.parse(newState))
+        }
+    }
 
 
     const OnChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
